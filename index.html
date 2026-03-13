@@ -31,7 +31,7 @@
         }
         .header h1 { font-size: 28px; margin-bottom: 5px; }
 
-        /* ── 시작 화면 ── */
+        /* 시작 화면 */
         #setup-screen { padding: 30px; }
         #setup-screen h2 { text-align: center; margin-bottom: 20px; color: #333; }
 
@@ -93,7 +93,7 @@
             cursor: pointer;
         }
 
-        /* ── 게임 화면 ── */
+        /* 게임 화면 */
         #game-screen { padding: 20px; display: none; }
 
         .main-layout {
@@ -102,7 +102,6 @@
             gap: 20px;
         }
 
-        /* 사이드 패널 */
         .side-panel { display: flex; flex-direction: column; gap: 12px; }
 
         .panel-box {
@@ -113,7 +112,6 @@
         }
         .panel-box h3 { font-size: 14px; color: #666; margin-bottom: 10px; }
 
-        /* 캐릭터 카드 */
         .char-card {
             display: flex;
             align-items: center;
@@ -155,7 +153,6 @@
         }
         .char-leave-btn:hover { color: #ff6b6b; }
 
-        /* 위치, 아이템 등 */
         .info-row { font-size: 14px; margin-bottom: 6px; }
         .info-row strong { color: #d63031; }
 
@@ -176,6 +173,16 @@
             font-size: 13px;
             border-left: 4px solid #ff6b6b;
             margin-top: 4px;
+        }
+
+        .mission-done-box {
+            background: linear-gradient(135deg, #d4efdf 0%, #d5f5e3 100%);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 13px;
+            border-left: 4px solid #00b894;
+            margin-top: 4px;
+            color: #2d6a4f;
         }
 
         /* 이벤트 로그 */
@@ -205,13 +212,14 @@
         .log-entry.join { border-left: 4px solid #00b894; }
         .log-entry.leave { border-left: 4px solid #ff6b6b; }
         .log-entry.system { border-left: 4px solid #fdcb6e; color: #636e72; font-style: italic; }
+        .log-entry.investigate { border-left: 4px solid #fd79a8; background: #fff5f8; }
+        .log-entry.mission-complete { border-left: 4px solid #00b894; background: #f0fff8; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 버튼 그룹 */
         .button-group {
             display: flex;
             flex-wrap: wrap;
@@ -233,10 +241,21 @@
         .button-group button:active { transform: translateY(0); }
         .btn-next { background: linear-gradient(135deg, #667eea, #764ba2); }
         .btn-prev { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .btn-investigate { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .btn-rumor { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .btn-investigate { background: linear-gradient(135deg, #fd79a8, #e84393); }
 
-        /* 합류 제안 모달 */
+        /* 수소문 모달 */
+        #investigate-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        #investigate-modal.active { display: flex; }
+
+        /* 합류 모달 */
         #join-modal {
             display: none;
             position: fixed;
@@ -247,23 +266,39 @@
             justify-content: center;
         }
         #join-modal.active { display: flex; }
+
         .modal-box {
             background: white;
             border-radius: 20px;
             padding: 30px;
-            max-width: 380px;
+            max-width: 420px;
             width: 90%;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         .modal-box h3 { font-size: 20px; margin-bottom: 10px; }
-        .modal-box p { color: #555; margin-bottom: 20px; font-size: 15px; line-height: 1.6; }
+        .modal-box p { color: #555; margin-bottom: 20px; font-size: 15px; line-height: 1.7; white-space: pre-line; }
         .modal-buttons { display: flex; gap: 12px; }
         .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; color: white; }
         .btn-accept { background: linear-gradient(135deg, #00b894, #00cec9); }
         .btn-decline { background: linear-gradient(135deg, #636e72, #b2bec3); }
+        .btn-mission-yes { background: linear-gradient(135deg, #fd79a8, #e84393); }
+        .btn-mission-no { background: linear-gradient(135deg, #636e72, #b2bec3); }
 
-        /* 스크롤바 */
+        .mission-choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .mission-choice-btn {
+            padding: 10px 14px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: left;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .mission-choice-btn:hover { border-color: #fd79a8; background: #fff5f8; }
+        .mission-choice-btn.selected { border-color: #e84393; background: #ffe3ef; font-weight: bold; }
+
         .event-log::-webkit-scrollbar { width: 8px; }
         .event-log::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
         .event-log::-webkit-scrollbar-thumb { background: #ccc; border-radius: 8px; }
@@ -276,42 +311,15 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🐹 햄스터왕국 시뮬레이터</h1>
-        <p>햄스터왕국으로 떨어진 이야기</p>
+        <h1>🐹 햄스터 어드벤처 시뮬레이터</h1>
+        <p>함께 떠나는 모험 이야기</p>
     </div>
 
     <!-- 시작 화면 -->
     <div id="setup-screen">
-        <h2>🎮 여행할 캐릭터를 입력하세요</h2>
+        <h2>🎮 여행할 햄스터를 입력하세요</h2>
         <div id="char-list"></div>
-        <button id="add-char-btn" onclick="addCharEntry()">➕ 캐릭       .modal-box p { color: #555; margin-bottom: 20px; font-size: 15px; line-height: 1.6; }
-        .modal-buttons { display: flex; gap: 12px; }
-        .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-accept { background: linear-gradient(135deg, #00b894, #00cec9); }
-        .btn-decline { background: linear-gradient(135deg, #636e72, #b2bec3); }
-
-        /* 스크롤바 */
-        .event-log::-webkit-scrollbar { width: 8px; }
-        .event-log::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
-        .event-log::-webkit-scrollbar-thumb { background: #ccc; border-radius: 8px; }
-
-        @media (max-width: 700px) {
-            .main-layout { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <div class="header">
-        <h1>🐹 햄스터왕국 시뮬레이터</h1>
-        <p>햄스터왕국으로 떨어진 이야기</p>
-    </div>
-
-    <!-- 시작 화면 -->
-    <div id="setup-screen">
-        <h2>🎮 여행할 캐릭터를 입력하세요</h2>
-        <div id="char-list"></div>
-        <button id="add-char-btn" onclick="addCharEntry()">➕ 캐릭터 추가</button>
+        <button id="add-char-btn" onclick="addCharEntry()">➕ 햄스터 추가</button>
         <button id="start-btn" onclick="startGame()">🌟 모험 시작!</button>
     </div>
 
@@ -329,16 +337,16 @@
                     <div class="info-row"><strong>🔄 턴:</strong> <span id="turn-display">0</span></div>
                 </div>
                 <div class="panel-box" id="mission-panel" style="display:none;">
-                    <h3>📌 미션</h3>
+                    <h3>📌 진행 중인 미션</h3>
                     <div id="mission-list"></div>
+                </div>
+                <div class="panel-box" id="done-mission-panel" style="display:none;">
+                    <h3>✅ 완료된 미션</h3>
+                    <div id="done-mission-list"></div>
                 </div>
                 <div class="panel-box">
                     <h3>💼 아이템</h3>
                     <div id="items-display"><span style="color:#aaa;font-size:13px;">없음</span></div>
-                </div>
-                <div class="panel-box">
-                    <h3>💬 수집한 소문</h3>
-                    <div id="rumors-display"><span style="color:#aaa;font-size:13px;">없음</span></div>
                 </div>
             </div>
 
@@ -349,9 +357,22 @@
                     <button class="btn-next" onclick="nextTurn()">▶️ 다음 턴</button>
                     <button class="btn-prev" onclick="previousTurn()">◀️ 이전으로</button>
                     <button class="btn-investigate" onclick="investigate()">🔍 수소문</button>
-                    <button class="btn-rumor" onclick="checkRumors()">📜 소문 목록</button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- 수소문 모달 -->
+<div id="investigate-modal">
+    <div class="modal-box">
+        <div style="font-size:44px; margin-bottom:8px;" id="inv-npc-emoji">🐹</div>
+        <h3 id="inv-title">수소문하기</h3>
+        <p id="inv-desc" style="margin-bottom:14px;"></p>
+        <div class="mission-choices" id="inv-mission-choices"></div>
+        <div class="modal-buttons">
+            <button class="btn-mission-yes" onclick="confirmInvestigate()">💬 물어보기</button>
+            <button class="btn-mission-no" onclick="closeInvestigateModal()">✕ 취소</button>
         </div>
     </div>
 </div>
@@ -385,23 +406,64 @@ const NPC_HAMSTERS = [
     { name: '코코', emoji: '🥥', personality: '명랑한', skill: '노래로 힘 회복' },
     { name: '단팥', emoji: '🫘', personality: '고집스러운', skill: '무거운 것 들기' },
     { name: '크림', emoji: '🍦', personality: '우아한', skill: '외교 협상' },
+    { name: '골든', emoji: '✨', personality: '고귀한', skill: '황금 유물 감정' }, 
+    { name: '킁킁', emoji: '👃', personality: '호기심 많은', skill: '냄새로 아이템 탐지' },
 ];
 
 const LOCATIONS = [
-    '햄스터왕국', '마을', '고무 숲', '안데스 산맥', '아라샤: 돌의 성역',
-    '파란 호수', '구름 계단', '황금 밀밭', '지하 동굴', '별빛 사막',
-    '은빛 강', '고대 신전', '떠다니는 섬', '얼음 동굴', '꽃밭 언덕',
+    '햄스터왕국', '씨앗 창고', '숨숨집 마을', '모래 목욕탕', '쳇바퀴 광장',
+    '럭셔리 물그릇 호수', '베딩 평원', '황금 밀밭', '햄크', '별빛 사막',
+    '햄휴먼시아', '고대 신전', '햄부르크', '햄타운', '햄스빌 언덕',
 ];
 
-// 솔로 이벤트 (파티원 1명 이상)
+// 미션별 NPC 힌트/완료 대화
+const MISSION_DIALOGUES = {
+    '시험의 장소 찾기': [
+        '"{NPC}가 눈을 가늘게 떴다. \"...서쪽 절벽 너머에 오래된 시험장이 있다고 들었어. 아무도 돌아온 적 없지만.\"',
+        '"{NPC}가 수염을 만지며 말했다. \"그 장소라면... 세 번째 달이 뜨는 날 밤에만 나타난다는 소문이 있어.\"',
+        '"{NPC}가 낡은 지도를 꺼냈다. \"여기, 이 표시가 보여? 이게 시험의 장소야. 용기 있는 자만 지나갈 수 있지.\"',
+    ],
+    '동굴 내부 탐험하기': [
+        '"{NPC}가 속삭였다. \"그 동굴... 나도 들어가려다 포기했어. 안에서 이상한 빛이 보였거든.\"',
+        '"{NPC}가 횃불을 건네며 말했다. \"동굴 왼쪽 갈림길로 가면 숨겨진 방이 있대. 거기 뭔가 있을 거야.\"',
+        '"{NPC}가 진지하게 말했다. \"동굴에 들어가기 전에 이 씨앗을 먹어. 어둠 속에서도 냄새를 맡을 수 있게 해줘.\"',
+    ],
+    '황금 해바라기 밭 찾기': [
+        '"{NPC}가 눈을 빛냈다. \"황금 해바라기! 나도 찾고 있어. 해가 지는 방향으로 계속 걷다 보면 나온다고 들었어.\"',
+        '"{NPC}가 조용히 말했다. \"그 밭은... 마음이 순수한 자에게만 보인대. 욕심 없이 걸어야 해.\"',
+        '"{NPC}가 고개를 끄덕였다. \"세 번째 산을 넘으면 황금빛 들판이 보일 거야. 거기가 틀림없어.\"',
+    ],
+    '고대 왕국의 흔적 찾기': [
+        '"{NPC}가 오래된 돌을 가리켰다. \"이 문양... 고대 햄스터 왕국의 표식이야. 여기서 멀지 않은 곳에 유적이 있을 거야.\"',
+        '"{NPC}가 낮은 목소리로 말했다. \"고대 왕국의 성벽이 지하에 묻혀 있대. 땅이 울리는 곳을 파면 나온다고 들었어.\"',
+        '"{NPC}가 두루마리를 펼쳤다. \"이 고대 문자... 읽을 수 있어. \'동쪽의 큰 나무 아래에 왕국의 문이 있다\'고 적혀있어.\"',
+    ],
+    '세 가지 신비한 씨앗 수집하기': [
+        '"{NPC}가 손을 내밀었다. \"이거 받아. 밤에 빛나는 씨앗이야. 세 가지 중 하나일 거야.\"',
+        '"{NPC}가 귓속말했다. \"신비한 씨앗... 하나는 폭포 뒤에, 하나는 구름 위에, 하나는 땅속 깊이 있대.\"',
+        '"{NPC}가 고개를 끄덕였다. \"예언의 씨앗이구나. 세 개가 모이면 엄청난 일이 일어날 거야.\"',
+    ],
+};
+
+// 기본 힌트 (미션에 맞는 대화가 없을 때)
+const DEFAULT_DIALOGUES = [
+    '"{NPC}가 생각에 잠겼다. \"음... 그건 나도 잘 모르겠어. 하지만 포기하지 마.\"',
+    '"{NPC}가 어깨를 으쓱했다. \"그 미션이라면... 동쪽으로 가보는 게 어떨까?\"',
+    '"{NPC}가 진지하게 말했다. \"쉽진 않겠지만, 분명히 방법이 있을 거야. 계속 찾아봐.\"',
+    '"{NPC}가 미소 지었다. \"사실 나도 그걸 찾고 있었어. 같이 해결해보자.\"',
+];
+
+// 미션 완료 조건 — NPC가 결정적 단서를 줄 확률 (수소문 시)
+const MISSION_COMPLETE_CHANCE = 0.45;
+
 const SOLO_EVENTS = [
     { text: '{A}가 길을 잘못 들어 낭떠러지 앞에 섰다. 간신히 발을 멈췄다... 심장이 두근거린다.', emoji: '😱' },
     { text: '{A}가 땅에서 빛나는 씨앗을 발견했다! 주머니에 소중히 넣었다.', emoji: '✨', item: '빛나는 씨앗' },
-    { text: '{A}가 낮잠을 자려다가 이상한 소리를 들었다. 귀를 쫑긋 세웠다.', emoji: '👂', rumor: '밤마다 이상한 소리가 들린다는 소문이 있다' },
+    { text: '{A}가 낮잠을 자려다가 이상한 소리를 들었다. 귀를 쫑긋 세웠다.', emoji: '👂' },
     { text: '{A}가 낡은 지도 조각을 주웠다. 어딘가의 보물이 표시되어 있는 것 같다.', emoji: '🗺️', item: '낡은 지도 조각' },
     { text: '갑자기 바람이 불더니 {A}의 모자가 날아갔다! 다행히 나뭇가지에 걸렸다.', emoji: '🌬️' },
     { text: '{A}가 신선한 해바라기 씨를 발견하고 맛있게 먹었다. 기운이 회복됐다!', emoji: '🌻' },
-    { text: '{A}가 바위 위에 올라가 멀리 바라봤다. 저 멀리 반짝이는 탑이 보인다.', emoji: '🏰', rumor: '동쪽 끝에 신비한 수정 탑이 있다는 소문이 있다' },
+    { text: '{A}가 바위 위에 올라가 멀리 바라봤다. 저 멀리 반짝이는 탑이 보인다.', emoji: '🏰' },
     { text: '{A}가 작은 개울을 발견했다. 시원한 물을 마시며 잠시 쉬었다.', emoji: '💧' },
     { text: '낡은 표지판을 발견했다. "{A}여, 조심하라 — 앞에는 시험이 기다린다."', emoji: '🪧', mission: '시험의 장소 찾기' },
     { text: '{A}가 발아래 희미한 발자국을 발견했다. 누군가 이 길을 먼저 지나간 것 같다.', emoji: '👣' },
@@ -417,7 +479,6 @@ const SOLO_EVENTS = [
     { text: '갑자기 소나기가 내렸다! {A}가 커다란 나뭇잎으로 비를 피했다.', emoji: '🌧️' },
 ];
 
-// 파티 상호작용 이벤트 (파티원 2명 이상 필요)
 const PARTY_EVENTS = [
     { text: '{A}와 {B}가 길을 두고 다퉜다. 결국 {A}의 의견대로 오른쪽으로 갔다.', emoji: '🗣️', type: 'interaction' },
     { text: '{A}가 {B}를 위해 먹을 것을 나눠줬다. {B}가 고마워했다.', emoji: '🤝', type: 'interaction' },
@@ -427,7 +488,7 @@ const PARTY_EVENTS = [
     { text: '{A}와 {B}가 힘을 합쳐 커다란 바위를 옮겼다. 그 아래에 낡은 상자가 있었다!', emoji: '📦', type: 'interaction', item: '낡은 상자 속 아이템' },
     { text: '{B}가 {A}에게 자신의 고향 이야기를 들려줬다. {A}는 열심히 귀를 기울였다.', emoji: '💬', type: 'interaction' },
     { text: '{A}와 {B}가 동시에 같은 씨앗을 발견하고 서로 눈을 마주쳤다. 잠시 정적이 흘렀다.', emoji: '👀', type: 'interaction' },
-    { text: '{A}가 길을 잃을 뻔했는데 {B}가 냄새로 방향을 찾아줬다. 대단해!', emoji: '🧭', type: 'interaction' },
+    { text: '{A}가 길을 잃을 뻔했는데 {B}가 냄새로 방향을 찾아줬다.', emoji: '🧭', type: 'interaction' },
     { text: '{A}가 {B}의 등에 업혀 큰 웅덩이를 건넜다. 서로 웃음을 터트렸다.', emoji: '😄', type: 'interaction' },
     { text: '{A}와 {B}가 밤을 지키기 위해 교대로 보초를 섰다.', emoji: '🔦', type: 'interaction' },
     { text: '{A}가 {B}의 생일을 기억하고 깜짝 씨앗 케이크를 만들었다!', emoji: '🎂', type: 'interaction', item: '씨앗 케이크 조각' },
@@ -439,7 +500,6 @@ const PARTY_EVENTS = [
     { text: '{A}가 {B}를 놀래키려다 오히려 자기가 더 놀랐다. 둘 다 한바탕 웃었다.', emoji: '😂', type: 'interaction' },
 ];
 
-// 세 명 이상 이벤트
 const TRIO_EVENTS = [
     { text: '{A}, {B}, {C}가 모닥불 주위에 모여 앉아 각자의 꿈 이야기를 나눴다.', emoji: '🔥', type: 'interaction' },
     { text: '{A}가 일행을 이끌었지만 {B}와 {C}가 반란을 일으켰다! 투표 끝에 {B}가 새 리더가 됐다.', emoji: '🗳️', type: 'interaction' },
@@ -448,7 +508,6 @@ const TRIO_EVENTS = [
     { text: '{B}와 {C}가 싸우기 시작했다. {A}가 중재에 나섰다. 결국 화해했다.', emoji: '🕊️', type: 'interaction' },
 ];
 
-// NPC 합류 이벤트 트리거
 const JOIN_EVENTS = [
     { trigger: '{NPC}가 길가에서 울고 있었다. "길을 잃었어요..."', reason: '길을 잃은 {NPC}가 함께해도 되는지 묻고 있습니다!' },
     { trigger: '{NPC}가 쫓기고 있었다! {NAME}이 도망치도록 도와줬다. {NPC}가 감사하다며 동행을 요청했다.', reason: '위험에서 구해줬더니 {NPC}가 함께하고 싶어합니다!' },
@@ -458,18 +517,16 @@ const JOIN_EVENTS = [
     { trigger: '{NPC}가 쓰러진 {NAME}을 구해줬다. 은인이다!', reason: '은인인 {NPC}가 동행을 원합니다!' },
 ];
 
-// 이동 이벤트
 const MOVE_EVENTS = [
     { text: '일행이 {LOC}(으)로 이동했다.', emoji: '🚶', move: true },
     { text: '지름길을 발견해 {LOC}에 빠르게 도착했다!', emoji: '⚡', move: true },
     { text: '오랜 걷기 끝에 드디어 {LOC}에 도착했다.', emoji: '😮‍💨', move: true },
 ];
 
-// 장소 이벤트
 const LOCATION_EVENTS = [
-    { text: '이 지역의 장로가 오래된 전설을 들려줬다.', emoji: '📖', rumor: '이 땅에는 고대 햄스터 왕국이 있었다는 전설이 있다', mission: '고대 왕국의 흔적 찾기' },
+    { text: '이 지역의 장로가 오래된 전설을 들려줬다.', emoji: '📖', mission: '고대 왕국의 흔적 찾기' },
     { text: '마을 시장에서 희귀한 물건을 발견했다!', emoji: '🏪', item: '신비한 물약' },
-    { text: '어떤 노인이 지도를 보여주며 보물이 있다고 속삭였다.', emoji: '🧓', rumor: '세 번째 산을 넘으면 황금 해바라기 밭이 있다', mission: '황금 해바라기 밭 찾기' },
+    { text: '어떤 노인이 지도를 보여주며 보물이 있다고 속삭였다.', emoji: '🧓', mission: '황금 해바라기 밭 찾기' },
     { text: '이 지역은 위험하다는 경고판이 있었다. 하지만 일행은 계속 나아갔다.', emoji: '🚨' },
     { text: '신전 안에서 빛나는 유물을 발견했다!', emoji: '🏛️', item: '빛나는 고대 유물' },
     { text: '마을 사람들이 환영 파티를 열어줬다! 맛있는 음식과 음악이 있었다.', emoji: '🎉' },
@@ -480,16 +537,18 @@ const LOCATION_EVENTS = [
 // ═══════════════════════════════════════════
 
 let gameState = {
-    party: [],          // { name, image, mood, isNPC }
+    party: [],
     location: '햄스터왕국',
     turn: 0,
     items: [],
     missions: [],
-    rumors: [],
+    doneMissions: [],
     history: [],
+    lastEventChars: [],   // 직전 이벤트에 등장한 캐릭터 이름 목록
 };
 
-let pendingJoin = null; // 합류 대기 중인 NPC 정보
+let pendingJoin = null;
+let selectedMissionIndex = null;
 
 // ═══════════════════════════════════════════
 //  시작 화면
@@ -500,12 +559,11 @@ let charEntries = [];
 function addCharEntry(defaultName = '') {
     const id = Date.now();
     charEntries.push(id);
-
     const div = document.createElement('div');
     div.className = 'char-entry';
     div.id = 'entry-' + id;
     div.innerHTML = `
-        <input type="text" placeholder="햄스터 이름 (예: 디팬)" value="${defaultName}" style="flex:1;">
+        <input type="text" placeholder="햄스터 이름 (예: 팔햄)" value="${defaultName}" style="flex:1;">
         <input type="file" accept="image/*" onchange="previewImage(this, 'prev-${id}')">
         <img id="prev-${id}" class="char-avatar-preview" alt="">
         <button class="btn-remove-char" onclick="removeCharEntry(${id})">✕</button>
@@ -534,13 +592,11 @@ function removeCharEntry(id) {
 function startGame() {
     const entries = document.querySelectorAll('#char-list .char-entry');
     const party = [];
-
     entries.forEach(entry => {
         const nameInput = entry.querySelector('input[type="text"]');
         const imgEl = entry.querySelector('img');
         const name = nameInput.value.trim();
         if (!name) return;
-
         party.push({
             name,
             image: (imgEl && imgEl.style.display !== 'none') ? imgEl.src : '',
@@ -554,23 +610,25 @@ function startGame() {
         return;
     }
 
-    gameState.party = party;
-    gameState.location = '햄스터왕국';
-    gameState.turn = 0;
-    gameState.items = [];
-    gameState.missions = [];
-    gameState.rumors = [];
-    gameState.history = [];
+    gameState = {
+        party,
+        location: '햄스터왕국',
+        turn: 0,
+        items: [],
+        missions: [],
+        doneMissions: [],
+        history: [],
+        lastEventChars: party.map(p => p.name),
+    };
 
     document.getElementById('setup-screen').style.display = 'none';
     document.getElementById('game-screen').style.display = 'block';
 
     updateDisplay();
-    addLog(`🎬 <strong>${party.map(p => p.name).join(', ')}의 모험이 시작됩니다!</strong>`, 'system');
+    addLog(`🎬 <strong>${party.map(p => p.name).join(', ')}은 햄스터왕국으로 떨어졌다.</strong>`, 'system');
     addLog(`일행은 햄스터왕국 입구에 서 있다. 어디로 향할까?`, 'system');
 }
 
-// 초기 캐릭터 칸 2개
 addCharEntry();
 addCharEntry();
 
@@ -584,42 +642,46 @@ function nextTurn() {
         return;
     }
 
-    // 히스토리 저장
-    gameState.history.push(JSON.parse(JSON.stringify(gameState)));
+    saveHistory();
     gameState.turn++;
 
-    // 이벤트 결정
     const roll = Math.random();
 
     if (roll < 0.12 && gameState.party.length >= 1) {
-        // NPC 합류 이벤트 (12%)
         triggerJoinEvent();
     } else if (roll < 0.25) {
-        // 이동 이벤트 (13%)
         triggerMoveEvent();
     } else if (roll < 0.45 && gameState.party.length >= 3) {
-        // 3인 이상 이벤트 (20%)
         triggerTrioEvent();
     } else if (roll < 0.68 && gameState.party.length >= 2) {
-        // 파티 상호작용 (23%)
         triggerPartyEvent();
     } else {
-        // 솔로 이벤트
         triggerSoloEvent();
     }
 
-    // 가끔 장소 이벤트 추가
     if (Math.random() < 0.2) {
-        setTimeout(() => triggerLocationEvent(), 300);
+        setTimeout(() => { triggerLocationEvent(); updateDisplay(); }, 300);
     }
 
     updateDisplay();
 }
 
+function saveHistory() {
+    // 히스토리에 현재 로그 DOM 스냅샷도 함께 저장
+    const logEl = document.getElementById('event-log');
+    gameState.history.push({
+        state: JSON.parse(JSON.stringify(gameState)),
+        logHTML: logEl.innerHTML,
+    });
+    // 메모리 절약: 최대 30턴만 보관
+    if (gameState.history.length > 30) gameState.history.shift();
+}
+
 function triggerSoloEvent() {
     const ev = pick(SOLO_EVENTS);
     const char = pick(gameState.party);
-    let text = ev.emoji + ' ' + ev.text.replace(/{A}/g, `<strong>${char.name}</strong>`);
+    gameState.lastEventChars = [char.name];
+    const text = ev.emoji + ' ' + ev.text.replace(/{A}/g, `<strong>${char.name}</strong>`);
     const extra = applyEventEffects(ev);
     addLog(text + extra);
 }
@@ -628,7 +690,8 @@ function triggerPartyEvent() {
     const ev = pick(PARTY_EVENTS);
     const shuffled = shuffle([...gameState.party]);
     const A = shuffled[0], B = shuffled[1];
-    let text = ev.emoji + ' ' + ev.text
+    gameState.lastEventChars = [A.name, B.name];
+    const text = ev.emoji + ' ' + ev.text
         .replace(/{A}/g, `<strong>${A.name}</strong>`)
         .replace(/{B}/g, `<strong>${B.name}</strong>`);
     const extra = applyEventEffects(ev);
@@ -639,7 +702,8 @@ function triggerTrioEvent() {
     const ev = pick(TRIO_EVENTS);
     const shuffled = shuffle([...gameState.party]);
     const A = shuffled[0], B = shuffled[1], C = shuffled[2];
-    let text = ev.emoji + ' ' + ev.text
+    gameState.lastEventChars = [A.name, B.name, C.name];
+    const text = ev.emoji + ' ' + ev.text
         .replace(/{A}/g, `<strong>${A.name}</strong>`)
         .replace(/{B}/g, `<strong>${B.name}</strong>`)
         .replace(/{C}/g, `<strong>${C.name}</strong>`);
@@ -651,39 +715,35 @@ function triggerMoveEvent() {
     const ev = pick(MOVE_EVENTS);
     const newLoc = pick(LOCATIONS.filter(l => l !== gameState.location));
     gameState.location = newLoc;
+    gameState.lastEventChars = gameState.party.map(p => p.name);
     const text = ev.emoji + ' ' + ev.text.replace(/{LOC}/g, `<strong>${newLoc}</strong>`);
     addLog(text);
 }
 
 function triggerLocationEvent() {
     const ev = pick(LOCATION_EVENTS);
-    let text = ev.emoji + ' ' + ev.text;
     const extra = applyEventEffects(ev);
-    addLog(text + extra);
+    addLog(ev.emoji + ' ' + ev.text + extra);
 }
 
 function triggerJoinEvent() {
-    // 아직 파티에 없는 NPC 선택
     const partyNames = gameState.party.map(p => p.name);
     const available = NPC_HAMSTERS.filter(n => !partyNames.includes(n.name));
-    if (available.length === 0) {
-        triggerSoloEvent();
-        return;
-    }
+    if (available.length === 0) { triggerSoloEvent(); return; }
 
     const npc = pick(available);
     const joinEv = pick(JOIN_EVENTS);
     const leaderName = gameState.party[0].name;
 
+    gameState.lastEventChars = [npc.name];
+
     const triggerText = joinEv.trigger
         .replace(/{NPC}/g, `<strong>${npc.emoji} ${npc.name}</strong>`)
         .replace(/{NAME}/g, `<strong>${leaderName}</strong>`);
-    const reason = joinEv.reason
-        .replace(/{NPC}/g, `${npc.emoji} ${npc.name}`);
+    const reason = joinEv.reason.replace(/{NPC}/g, `${npc.emoji} ${npc.name}`);
 
     addLog('🌟 ' + triggerText, 'join');
 
-    // 모달 표시
     pendingJoin = npc;
     document.getElementById('modal-emoji').textContent = npc.emoji;
     document.getElementById('modal-title').textContent = `${npc.name}이(가) 합류를 원합니다!`;
@@ -695,14 +755,7 @@ function triggerJoinEvent() {
 function acceptJoin() {
     if (!pendingJoin) return;
     const npc = pendingJoin;
-    gameState.party.push({
-        name: npc.name,
-        image: '',
-        emoji: npc.emoji,
-        mood: '합류한',
-        isNPC: true,
-        skill: npc.skill,
-    });
+    gameState.party.push({ name: npc.name, image: '', emoji: npc.emoji, mood: '합류한', isNPC: true, skill: npc.skill });
     addLog(`✅ <strong>${npc.emoji} ${npc.name}</strong>이(가) 일행에 합류했다! (특기: ${npc.skill})`, 'join');
     pendingJoin = null;
     document.getElementById('join-modal').classList.remove('active');
@@ -722,69 +775,119 @@ function applyEventEffects(ev) {
         gameState.items.push(ev.item);
         extra += ` <strong style="color:#00b894;">[ ${ev.item} 획득! ]</strong>`;
     }
-    if (ev.rumor && !gameState.rumors.includes(ev.rumor)) {
-        gameState.rumors.push(ev.rumor);
-        extra += ` <em style="color:#6c5ce7;">[새 소문 입수]</em>`;
-    }
-    if (ev.mission && !gameState.missions.includes(ev.mission)) {
+    if (ev.mission && !gameState.missions.includes(ev.mission) && !gameState.doneMissions.includes(ev.mission)) {
         gameState.missions.push(ev.mission);
         extra += ` <strong style="color:#d63031;">[ 새 미션: ${ev.mission} ]</strong>`;
     }
     return extra;
 }
 
-// 이전 턴
+// ─── 이전 턴 (히스토리 기반 완전 복구) ───
 function previousTurn() {
     if (gameState.history.length === 0) {
         addLog('◀️ 더 이상 되돌릴 수 없습니다.', 'system');
         return;
     }
+    const snapshot = gameState.history.pop();
+    gameState = snapshot.state;
+    // 히스토리 배열 자체는 복원된 state 안에 있으므로 재연결
+    gameState.history = snapshot.state.history;
 
-    // 현재 턴에서 추가된 로그 수만큼 제거
-    const currentTurn = gameState.turn;
-    gameState = gameState.history.pop();
+    document.getElementById('event-log').innerHTML = snapshot.logHTML;
+    document.getElementById('event-log').scrollTop = document.getElementById('event-log').scrollHeight;
     updateDisplay();
-
-    const log = document.getElementById('event-log');
-    // 현재 턴 번호와 일치하는 로그를 모두 제거
-    const entries = log.querySelectorAll('.log-entry');
-    entries.forEach(entry => {
-        if (entry.dataset.turn == currentTurn) {
-            entry.remove();
-        }
-    });
 }
 
-// 수소문
+// ─── 수소문 버튼 ───
 function investigate() {
-    const investigates = [
-        { text: '🗣️ 마을 사람이 동쪽 숲에서 이상한 빛을 봤다고 한다.', rumor: '동쪽 숲에서 이상한 빛이 목격됐다는 소문이 있다' },
-        { text: '📜 낡은 게시판에서 현상금 포스터를 발견했다. 누군가를 찾는 것 같다.', rumor: '사라진 햄스터를 찾는 현상금이 걸려있다' },
-        { text: '🌙 한밤중에 별이 쏟아지는 장소가 있다는 이야기를 들었다.', rumor: '별이 쏟아지는 신비한 언덕이 있다는 소문이 있다' },
-        { text: '🧙 수상한 노인이 "다음 보름달에 주의하라"고 경고했다.', rumor: '보름달 때 기이한 일이 일어난다는 소문이 있다' },
-        { text: '🐦 새가 길을 알려주는 것 같다. 저 방향으로 날고 있다.', rumor: '길을 안내해주는 신비한 새가 있다는 소문이 있다' },
-        { text: '💎 지하 깊은 곳에 보물이 있다는 소문을 들었다.', rumor: '지하 깊은 곳에 햄스터 왕의 보물이 있다' },
-        { text: '🌊 바다 너머에 아무도 가본 적 없는 섬이 있다고 한다.', rumor: '미지의 섬이 바다 너머에 있다는 소문이 있다' },
-        { text: '🔮 이상한 가게 주인이 예언을 해줬다. 의미를 알 수 없다.', rumor: '"세 개의 씨앗이 모이면 세상이 바뀐다"는 예언이 있다', mission: '세 가지 신비한 씨앗 수집하기' },
-    ];
-    const ev = pick(investigates);
-    if (ev.rumor && !gameState.rumors.includes(ev.rumor)) {
-        gameState.rumors.push(ev.rumor);
-    }
-    if (ev.mission && !gameState.missions.includes(ev.mission)) {
-        gameState.missions.push(ev.mission);
-    }
-    addLog(ev.text);
-    updateDisplay();
-}
-
-// 소문 확인
-function checkRumors() {
-    if (gameState.rumors.length === 0) {
-        addLog('💬 아직 수집한 소문이 없습니다.', 'system');
+    if (gameState.missions.length === 0) {
+        addLog('📌 현재 진행 중인 미션이 없습니다. 먼저 미션을 얻어보세요!', 'system');
         return;
     }
-    addLog('📜 <strong>수집된 소문 목록:</strong> ' + gameState.rumors.map((r, i) => `<br>${i + 1}. ${r}`).join(''), 'system');
+    if (gameState.lastEventChars.length === 0) {
+        addLog('🔍 이야기를 나눌 캐릭터가 없습니다. 먼저 다음 턴을 진행해보세요!', 'system');
+        return;
+    }
+
+    // 모달 구성
+    const npcName = gameState.lastEventChars[0];
+    const npcData = NPC_HAMSTERS.find(n => n.name === npcName);
+    const partyMember = gameState.party.find(p => p.name === npcName);
+    const emoji = npcData ? npcData.emoji : (partyMember && partyMember.emoji ? partyMember.emoji : '🐹');
+
+    document.getElementById('inv-npc-emoji').textContent = emoji;
+    document.getElementById('inv-title').textContent = `${npcName}에게 수소문하기`;
+    document.getElementById('inv-desc').textContent = `직전 이벤트에서 만난 ${npcName}에게\n궁금한 미션에 대해 물어보세요.`;
+
+    // 미션 선택지 생성
+    const choicesDiv = document.getElementById('inv-mission-choices');
+    choicesDiv.innerHTML = '';
+    selectedMissionIndex = null;
+
+    gameState.missions.forEach((mission, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'mission-choice-btn';
+        btn.textContent = `📌 ${mission}`;
+        btn.onclick = () => {
+            document.querySelectorAll('.mission-choice-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedMissionIndex = i;
+        };
+        choicesDiv.appendChild(btn);
+    });
+
+    document.getElementById('investigate-modal').classList.add('active');
+}
+
+function closeInvestigateModal() {
+    document.getElementById('investigate-modal').classList.remove('active');
+    selectedMissionIndex = null;
+}
+
+function confirmInvestigate() {
+    if (selectedMissionIndex === null) {
+        alert('미션을 선택해주세요!');
+        return;
+    }
+
+    const mission = gameState.missions[selectedMissionIndex];
+    const npcName = gameState.lastEventChars[0];
+    const npcData = NPC_HAMSTERS.find(n => n.name === npcName);
+    const emoji = npcData ? npcData.emoji : '🐹';
+
+    closeInvestigateModal();
+
+    // 대화 선택
+    const dialogues = MISSION_DIALOGUES[mission] || DEFAULT_DIALOGUES;
+    const dialogue = pick(dialogues).replace(/{NPC}/g, `${emoji} ${npcName}`);
+
+    addLog(`🔍 <strong>${npcName}</strong>에게 "<strong>${mission}</strong>"에 대해 물었다.`, 'investigate');
+    addLog(`💬 ${dialogue}`, 'investigate');
+
+    // 완료 판정
+    if (Math.random() < MISSION_COMPLETE_CHANCE) {
+        setTimeout(() => {
+            completeMission(mission, npcName, emoji);
+        }, 400);
+    } else {
+        addLog(`<em style="color:#888;">아직 결정적인 단서를 얻지 못했다. 계속 수소문해보자.</em>`, 'system');
+    }
+
+    updateDisplay();
+}
+
+function completeMission(mission, npcName, emoji) {
+    const idx = gameState.missions.indexOf(mission);
+    if (idx === -1) return;
+
+    gameState.missions.splice(idx, 1);
+    gameState.doneMissions.push(mission);
+
+    addLog(
+        `🎉 <strong style="color:#00b894;">[미션 완료!]</strong> ${emoji} ${npcName}의 도움으로 "<strong>${mission}</strong>" 미션을 해결했다!`,
+        'mission-complete'
+    );
+    updateDisplay();
 }
 
 // 헤어지기
@@ -797,9 +900,8 @@ function separateChar(index) {
     }
     if (!confirm(`${char.name}와(과) 헤어지겠습니까?`)) return;
 
-    gameState.history.push(JSON.parse(JSON.stringify(gameState)));
+    saveHistory();
     gameState.party.splice(index, 1);
-
     addLog(`💔 <strong>${char.name}</strong>이(가) 일행과 헤어졌다. 언젠가 다시 만날 수 있을까...`, 'leave');
     updateDisplay();
 }
@@ -818,15 +920,9 @@ function updateDisplay() {
     gameState.party.forEach((char, i) => {
         const card = document.createElement('div');
         card.className = 'char-card' + (i === 0 ? ' leader' : '');
-
-        let avatarHTML = '';
-        if (char.image) {
-            avatarHTML = `<img src="${char.image}" alt="${char.name}">`;
-        } else {
-            const emoji = char.emoji || '🐹';
-            avatarHTML = `<div class="char-emoji-avatar">${emoji}</div>`;
-        }
-
+        const avatarHTML = char.image
+            ? `<img src="${char.image}" alt="${char.name}">`
+            : `<div class="char-emoji-avatar">${char.emoji || '🐹'}</div>`;
         card.innerHTML = `
             ${avatarHTML}
             <div class="char-info">
@@ -845,13 +941,7 @@ function updateDisplay() {
         ? '<span style="color:#aaa;font-size:13px;">없음</span>'
         : gameState.items.map(it => `<span class="badge">${it}</span>`).join('');
 
-    // 소문
-    const rumorsDiv = document.getElementById('rumors-display');
-    rumorsDiv.innerHTML = gameState.rumors.length === 0
-        ? '<span style="color:#aaa;font-size:13px;">없음</span>'
-        : gameState.rumors.map(r => `<div style="font-size:12px;color:#555;margin-bottom:4px;">• ${r}</div>`).join('');
-
-    // 미션
+    // 진행 중인 미션
     const missionPanel = document.getElementById('mission-panel');
     const missionList = document.getElementById('mission-list');
     if (gameState.missions.length > 0) {
@@ -862,13 +952,25 @@ function updateDisplay() {
     } else {
         missionPanel.style.display = 'none';
     }
+
+    // 완료된 미션
+    const doneMissionPanel = document.getElementById('done-mission-panel');
+    const doneMissionList = document.getElementById('done-mission-list');
+    if (gameState.doneMissions.length > 0) {
+        doneMissionPanel.style.display = 'block';
+        doneMissionList.innerHTML = gameState.doneMissions.map(m =>
+            `<div class="mission-done-box" style="margin-bottom:6px;">✅ ${m}</div>`
+        ).join('');
+    } else {
+        doneMissionPanel.style.display = 'none';
+    }
 }
 
 function addLog(html, type = '') {
     const log = document.getElementById('event-log');
     const p = document.createElement('div');
     p.className = 'log-entry' + (type ? ' ' + type : '');
-    p.dataset.turn = gameState.turn;  // ← 이 줄 추가
+    p.dataset.turn = gameState.turn;
     p.innerHTML = html;
     log.appendChild(p);
     log.scrollTop = log.scrollHeight;

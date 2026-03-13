@@ -276,15 +276,42 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🐹 햄스터 어드벤처 시뮬레이터</h1>
-        <p>함께 떠나는 모험 이야기</p>
+        <h1>🐹 햄스터왕국 시뮬레이터</h1>
+        <p>햄스터왕국으로 떨어진 이야기</p>
     </div>
 
     <!-- 시작 화면 -->
     <div id="setup-screen">
-        <h2>🎮 여행할 햄스터를 입력하세요</h2>
+        <h2>🎮 여행할 캐릭터를 입력하세요</h2>
         <div id="char-list"></div>
-        <button id="add-char-btn" onclick="addCharEntry()">➕ 햄스터 추가</button>
+        <button id="add-char-btn" onclick="addCharEntry()">➕ 캐릭       .modal-box p { color: #555; margin-bottom: 20px; font-size: 15px; line-height: 1.6; }
+        .modal-buttons { display: flex; gap: 12px; }
+        .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; color: white; }
+        .btn-accept { background: linear-gradient(135deg, #00b894, #00cec9); }
+        .btn-decline { background: linear-gradient(135deg, #636e72, #b2bec3); }
+
+        /* 스크롤바 */
+        .event-log::-webkit-scrollbar { width: 8px; }
+        .event-log::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
+        .event-log::-webkit-scrollbar-thumb { background: #ccc; border-radius: 8px; }
+
+        @media (max-width: 700px) {
+            .main-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🐹 햄스터왕국 시뮬레이터</h1>
+        <p>햄스터왕국으로 떨어진 이야기</p>
+    </div>
+
+    <!-- 시작 화면 -->
+    <div id="setup-screen">
+        <h2>🎮 여행할 캐릭터를 입력하세요</h2>
+        <div id="char-list"></div>
+        <button id="add-char-btn" onclick="addCharEntry()">➕ 캐릭터 추가</button>
         <button id="start-btn" onclick="startGame()">🌟 모험 시작!</button>
     </div>
 
@@ -298,7 +325,7 @@
                     <div id="party-list"></div>
                 </div>
                 <div class="panel-box">
-                    <div class="info-row"><strong>📍 위치:</strong> <span id="loc-display">햄스터완국</span></div>
+                    <div class="info-row"><strong>📍 위치:</strong> <span id="loc-display">햄스터왕국</span></div>
                     <div class="info-row"><strong>🔄 턴:</strong> <span id="turn-display">0</span></div>
                 </div>
                 <div class="panel-box" id="mission-panel" style="display:none;">
@@ -361,7 +388,7 @@ const NPC_HAMSTERS = [
 ];
 
 const LOCATIONS = [
-    '햄스터완국', '마을', '고무 숲', '안데스 산맥', '아라샤: 돌의 성역',
+    '햄스터왕국', '마을', '고무 숲', '안데스 산맥', '아라샤: 돌의 성역',
     '파란 호수', '구름 계단', '황금 밀밭', '지하 동굴', '별빛 사막',
     '은빛 강', '고대 신전', '떠다니는 섬', '얼음 동굴', '꽃밭 언덕',
 ];
@@ -454,7 +481,7 @@ const LOCATION_EVENTS = [
 
 let gameState = {
     party: [],          // { name, image, mood, isNPC }
-    location: '햄스터완국',
+    location: '햄스터왕국',
     turn: 0,
     items: [],
     missions: [],
@@ -528,7 +555,7 @@ function startGame() {
     }
 
     gameState.party = party;
-    gameState.location = '햄스터완국';
+    gameState.location = '햄스터왕국';
     gameState.turn = 0;
     gameState.items = [];
     gameState.missions = [];
@@ -540,7 +567,7 @@ function startGame() {
 
     updateDisplay();
     addLog(`🎬 <strong>${party.map(p => p.name).join(', ')}의 모험이 시작됩니다!</strong>`, 'system');
-    addLog(`일행은 햄스터완국 입구에 서 있다. 어디로 향할까?`, 'system');
+    addLog(`일행은 햄스터왕국 입구에 서 있다. 어디로 향할까?`, 'system');
 }
 
 // 초기 캐릭터 칸 2개
@@ -712,13 +739,20 @@ function previousTurn() {
         addLog('◀️ 더 이상 되돌릴 수 없습니다.', 'system');
         return;
     }
+
+    // 현재 턴에서 추가된 로그 수만큼 제거
+    const currentTurn = gameState.turn;
     gameState = gameState.history.pop();
     updateDisplay();
 
-    // 마지막 로그 항목 제거
     const log = document.getElementById('event-log');
-    const last = log.lastElementChild;
-    if (last) last.remove();
+    // 현재 턴 번호와 일치하는 로그를 모두 제거
+    const entries = log.querySelectorAll('.log-entry');
+    entries.forEach(entry => {
+        if (entry.dataset.turn == currentTurn) {
+            entry.remove();
+        }
+    });
 }
 
 // 수소문
@@ -834,6 +868,7 @@ function addLog(html, type = '') {
     const log = document.getElementById('event-log');
     const p = document.createElement('div');
     p.className = 'log-entry' + (type ? ' ' + type : '');
+    p.dataset.turn = gameState.turn;  // ← 이 줄 추가
     p.innerHTML = html;
     log.appendChild(p);
     log.scrollTop = log.scrollHeight;

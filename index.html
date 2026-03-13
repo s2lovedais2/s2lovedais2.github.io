@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐹 햄스터 어드벤처 시뮬레이터</title>
+    <title>🐹 햄스터왕국 시뮬레이터</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -311,15 +311,15 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>🐹 햄스터 어드벤처 시뮬레이터</h1>
-        <p>함께 떠나는 모험 이야기</p>
+        <h1>🐹 햄스터왕국 시뮬레이터</h1>
+        <p>햄스터 왕국에 떨어졌다!</p>
     </div>
 
     <!-- 시작 화면 -->
     <div id="setup-screen">
-        <h2>🎮 여행할 햄스터를 입력하세요</h2>
+        <h2>🎮 여행할 캐릭터를 입력하세요</h2>
         <div id="char-list"></div>
-        <button id="add-char-btn" onclick="addCharEntry()">➕ 햄스터 추가</button>
+        <button id="add-char-btn" onclick="addCharEntry()">➕ 캐릭터 추가</button>
         <button id="start-btn" onclick="startGame()">🌟 모험 시작!</button>
     </div>
 
@@ -454,7 +454,7 @@ const DEFAULT_DIALOGUES = [
 ];
 
 // 미션 완료 조건 — NPC가 결정적 단서를 줄 확률 (수소문 시)
-const MISSION_COMPLETE_CHANCE = 0.45;
+const MISSION_COMPLETE_CHANCE = 0.01;
 
 const SOLO_EVENTS = [
     { text: '{A}가 길을 잘못 들어 낭떠러지 앞에 섰다. 간신히 발을 멈췄다... 심장이 두근거린다.', emoji: '😱' },
@@ -528,7 +528,7 @@ const LOCATION_EVENTS = [
     { text: '마을 시장에서 희귀한 물건을 발견했다!', emoji: '🏪', item: '신비한 물약' },
     { text: '어떤 노인이 지도를 보여주며 보물이 있다고 속삭였다.', emoji: '🧓', mission: '황금 해바라기 밭 찾기' },
     { text: '이 지역은 위험하다는 경고판이 있었다. 하지만 일행은 계속 나아갔다.', emoji: '🚨' },
-    { text: '신전 안에서 빛나는 유물을 발견했다!', emoji: '🏛️', item: '빛나는 고대 유물' },
+    { text: '딸기우유맛 분홍빛 젤리를 발견했다!', emoji: '🧁', item: '분홍빛 젤리' },
     { text: '마을 사람들이 환영 파티를 열어줬다! 맛있는 음식과 음악이 있었다.', emoji: '🎉' },
 ];
 
@@ -626,7 +626,7 @@ function startGame() {
 
     updateDisplay();
     addLog(`🎬 <strong>${party.map(p => p.name).join(', ')}은 햄스터왕국으로 떨어졌다.</strong>`, 'system');
-    addLog(`일행은 햄스터왕국 입구에 서 있다. 어디로 향할까?`, 'system');
+    addLog(`일행은 햄스터로 변해버렸다!`, 'system');
 }
 
 addCharEntry();
@@ -667,13 +667,12 @@ function nextTurn() {
 }
 
 function saveHistory() {
-    // 히스토리에 현재 로그 DOM 스냅샷도 함께 저장
     const logEl = document.getElementById('event-log');
+    const { history, ...stateWithoutHistory } = gameState;
     gameState.history.push({
-        state: JSON.parse(JSON.stringify(gameState)),
+        state: JSON.parse(JSON.stringify(stateWithoutHistory)),
         logHTML: logEl.innerHTML,
     });
-    // 메모리 절약: 최대 30턴만 보관
     if (gameState.history.length > 30) gameState.history.shift();
 }
 
@@ -788,10 +787,9 @@ function previousTurn() {
         addLog('◀️ 더 이상 되돌릴 수 없습니다.', 'system');
         return;
     }
-    const snapshot = gameState.history.pop();
-    gameState = snapshot.state;
-    // 히스토리 배열 자체는 복원된 state 안에 있으므로 재연결
-    gameState.history = snapshot.state.history;
+    const prevHistory = [...gameState.history];
+    const snapshot = prevHistory.pop();
+    gameState = { ...snapshot.state, history: prevHistory };
 
     document.getElementById('event-log').innerHTML = snapshot.logHTML;
     document.getElementById('event-log').scrollTop = document.getElementById('event-log').scrollHeight;

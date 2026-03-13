@@ -412,47 +412,65 @@ const NPC_HAMSTERS = [
 
 const LOCATIONS = [
     '햄스터왕국', '씨앗 창고', '숨숨집 마을', '모래 목욕탕', '쳇바퀴 광장',
-    '럭셔리 물그릇 호수', '베딩 평원', '황금 밀밭', '햄크', '별빛 사막',
+    '럭셔리 물그릇 호수', '베딩 평원', '황금 밀밭', '햄크크', '지하 동굴',
     '햄휴먼시아', '고대 신전', '햄부르크', '햄타운', '햄스빌 언덕',
 ];
 
 // 미션별 NPC 힌트/완료 대화
 const MISSION_DIALOGUES = {
     '시험의 장소 찾기': [
-        '"{NPC}가 눈을 가늘게 떴다. \"...서쪽 절벽 너머에 오래된 시험장이 있다고 들었어. 아무도 돌아온 적 없지만.\"',
-        '"{NPC}가 수염을 만지며 말했다. \"그 장소라면... 세 번째 달이 뜨는 날 밤에만 나타난다는 소문이 있어.\"',
-        '"{NPC}가 낡은 지도를 꺼냈다. \"여기, 이 표시가 보여? 이게 시험의 장소야. 용기 있는 자만 지나갈 수 있지.\"',
+        { text: '{NPC}가 눈을 가늘게 떴다. "...서쪽 절벽 너머에 오래된 시험장이 있다고 들었어. 아무도 돌아온 적 없지만."', clear: false },
+        { text: '{NPC}가 수염을 만지며 말했다. "그 장소라면... 세 번째 달이 뜨는 날 밤에만 나타난다는 소문이 있어."', clear: false },
+        { text: '{NPC}가 낡은 지도를 꺼냈다. "여기, 이 표시가 보여? 이게 시험의 장소야. 용기 있는 자만 지나갈 수 있지."', clear: false },
+        { text: '{NPC}가 지도 조각을 가리켰다. "잠깐, 그 지도 조각... 이리 줘봐. ...맞아, 여기야. 이 방향으로 가면 돼!"', clear: true, requireItem: '낡은 지도 조각' },
     ],
     '동굴 내부 탐험하기': [
-        '"{NPC}가 속삭였다. \"그 동굴... 나도 들어가려다 포기했어. 안에서 이상한 빛이 보였거든.\"',
-        '"{NPC}가 횃불을 건네며 말했다. \"동굴 왼쪽 갈림길로 가면 숨겨진 방이 있대. 거기 뭔가 있을 거야.\"',
-        '"{NPC}가 진지하게 말했다. \"동굴에 들어가기 전에 이 씨앗을 먹어. 어둠 속에서도 냄새를 맡을 수 있게 해줘.\"',
+        { text: '{NPC}가 속삭였다. "그 동굴... 나도 들어가려다 포기했어. 안에서 이상한 빛이 보였거든."', clear: false },
+        { text: '{NPC}가 횃불을 건네며 말했다. "동굴 왼쪽 갈림길로 가면 숨겨진 방이 있대. 거기 뭔가 있을 거야."', clear: false },
+        { text: '{NPC}가 진지하게 말했다. "동굴에 들어가기 전에 이 씨앗을 먹어. 어둠 속에서도 냄새를 맡을 수 있게 해줘."', clear: false },
     ],
     '황금 해바라기 밭 찾기': [
-        '"{NPC}가 눈을 빛냈다. \"황금 해바라기! 나도 찾고 있어. 해가 지는 방향으로 계속 걷다 보면 나온다고 들었어.\"',
-        '"{NPC}가 조용히 말했다. \"그 밭은... 마음이 순수한 자에게만 보인대. 욕심 없이 걸어야 해.\"',
-        '"{NPC}가 고개를 끄덕였다. \"세 번째 산을 넘으면 황금빛 들판이 보일 거야. 거기가 틀림없어.\"',
+        { text: '{NPC}가 눈을 빛냈다. "황금 해바라기! 나도 찾고 있어. 햄스빌 언덕 방향으로 계속 걷다 보면 나온다고 들었어."', clear: false },
+        { text: '{NPC}가 조용히 말했다. "그 밭은... 마음이 순수한 자에게만 보인대. 욕심 없이 걸어야 해."', clear: false },
+        { text: '{NPC}가 고개를 끄덕였다. "햄스빌 언덕에 가봐. 거기가 틀림없어."', clear: false },
     ],
     '고대 왕국의 흔적 찾기': [
-        '"{NPC}가 오래된 돌을 가리켰다. \"이 문양... 고대 햄스터 왕국의 표식이야. 여기서 멀지 않은 곳에 유적이 있을 거야.\"',
-        '"{NPC}가 낮은 목소리로 말했다. \"고대 왕국의 성벽이 지하에 묻혀 있대. 땅이 울리는 곳을 파면 나온다고 들었어.\"',
-        '"{NPC}가 두루마리를 펼쳤다. \"이 고대 문자... 읽을 수 있어. \'동쪽의 큰 나무 아래에 왕국의 문이 있다\'고 적혀있어.\"',
+        { text: '{NPC}가 오래된 돌을 가리켰다. "이 문양... 고대 햄스터 왕국의 표식이야. 여기서 멀지 않은 곳에 유적이 있을 거야."', clear: false },
+        { text: '{NPC}가 낮은 목소리로 말했다. "고대 왕국의 성벽이 지하에 묻혀 있대. 땅이 울리는 곳을 파면 나온다고 들었어."', clear: false },
+        { text: '{NPC}가 두루마리를 펼쳤다. "이 고대 문자... 읽을 수 있어. \'동쪽의 큰 나무 아래에 왕국의 문이 있다\'고 적혀있어."', clear: false },
+        { text: '{NPC}(블루베리)가 유물을 조심스럽게 들여다봤다. "...이 문자, 해독할 수 있어. 고대 햄스터 왕국의 문장이야. 왕국은 실제로 존재했어!"', clear: true, requirePartyMember: '블루베리' },
+        { text: '{NPC}가 황금 유물을 감정하며 눈을 크게 떴다. "이건... 고대 왕국의 유물이야. 틀림없어. 왕국의 흔적을 찾은 거야!"', clear: true, requireItem: '빛나는 고대 유물' },
     ],
     '세 가지 신비한 씨앗 수집하기': [
-        '"{NPC}가 손을 내밀었다. \"이거 받아. 밤에 빛나는 씨앗이야. 세 가지 중 하나일 거야.\"',
-        '"{NPC}가 귓속말했다. \"신비한 씨앗... 하나는 폭포 뒤에, 하나는 구름 위에, 하나는 땅속 깊이 있대.\"',
-        '"{NPC}가 고개를 끄덕였다. \"예언의 씨앗이구나. 세 개가 모이면 엄청난 일이 일어날 거야.\"',
+        { text: '{NPC}가 손을 내밀었다. "이거 받아. 고소한 냄새가 나는 씨앗이야. 뭔가 특별한 것 같아."', clear: false, giveItem: '고소한 씨앗' },
+        { text: '{NPC}가 귓속말했다. "이 씨앗 줄게. 먹어보니까 달콤한 맛이 나더라. 신기하지?"', clear: false, giveItem: '달콤한 씨앗' },
+        { text: '{NPC}가 주머니를 뒤졌다. "어, 이상한 씨앗이 있었는데... 여기 있다. 완전히 말라비틀어졌는데 버리기엔 아깝더라고."', clear: false, giveItem: '말라비틀어진 씨앗' },
+        { text: '{NPC}가 고개를 끄덕였다. "예언의 씨앗이구나. 세 개가 모이면 엄청난 일이 일어날 거야."', clear: false },
     ],
 };
 
 // 기본 힌트 (미션에 맞는 대화가 없을 때)
 const DEFAULT_DIALOGUES = [
-    '"{NPC}가 생각에 잠겼다. \"음... 그건 나도 잘 모르겠어. 하지만 포기하지 마.\"',
-    '"{NPC}가 어깨를 으쓱했다. \"그 미션이라면... 동쪽으로 가보는 게 어떨까?\"',
-    '"{NPC}가 진지하게 말했다. \"쉽진 않겠지만, 분명히 방법이 있을 거야. 계속 찾아봐.\"',
-    '"{NPC}가 미소 지었다. \"사실 나도 그걸 찾고 있었어. 같이 해결해보자.\"',
+    { text: '{NPC}가 생각에 잠겼다. "음... 그건 나도 잘 모르겠어. 하지만 포기하지 마."', clear: false },
+    { text: '{NPC}가 어깨를 으쓱했다. "그 미션이라면... 동쪽으로 가보는 게 어떨까?"', clear: false },
+    { text: '{NPC}가 진지하게 말했다. "쉽진 않겠지만, 분명히 방법이 있을 거야. 계속 찾아봐."', clear: false },
+    { text: '{NPC}가 미소 지었다. "사실 나도 그걸 찾고 있었어. 같이 해결해보자."', clear: false },
 ];
 
+// 동굴 내부 전용 이벤트
+const CAVE_EVENTS = [
+    { text: '어둠 속에서 발소리가 울린다. 일행은 조심스럽게 발을 내딛었다.', emoji: '🦶' },
+    { text: '동굴 벽에서 이상한 빛이 흘러나왔다. 가까이 가보니 빛나는 광석이었다!', emoji: '💎', item: '빛나는 광석' },
+    { text: '갈림길이 나타났다. 일행은 잠시 멈춰 서서 냄새를 맡아봤다.', emoji: '👃' },
+    { text: '천장에서 물방울이 뚝뚝 떨어졌다. 어딘가에서 물 흐르는 소리가 들린다.', emoji: '💧' },
+    { text: '거대한 박쥐 떼가 날아올랐다! 일행은 납작 엎드려 피했다.', emoji: '🦇' },
+    { text: '동굴 안쪽에서 오래된 뼈다귀를 발견했다. 누구의 것일까...', emoji: '🦴' },
+    { text: '희미한 빛이 보인다. 출구일까? 아니, 또 다른 방이었다.', emoji: '🕯️' },
+    { text: '발 아래가 미끄러웠다! 간신히 균형을 잡았다. 심장이 쿵쾅거린다.', emoji: '😰' },
+    { text: '동굴 깊은 곳에서 바람이 불어왔다. 어딘가에 통로가 있는 것 같다.', emoji: '🌬️' },
+    { text: '낡은 횃불 받침대를 발견했다. 누군가 이 동굴을 탐험했던 것 같다.', emoji: '🔦' },
+    { text: '드디어 빛이 보인다! 일행은 전력으로 달려 동굴 밖으로 탈출했다! 눈부신 햇살이 반겨줬다.', emoji: '🌟', isCaveExit: true },
+];
 // 미션 완료 조건 — NPC가 결정적 단서를 줄 확률 (수소문 시)
 const MISSION_COMPLETE_CHANCE = 0.01;
 
@@ -563,7 +581,7 @@ function addCharEntry(defaultName = '') {
     div.className = 'char-entry';
     div.id = 'entry-' + id;
     div.innerHTML = `
-        <input type="text" placeholder="햄스터 이름 (예: 팔햄)" value="${defaultName}" style="flex:1;">
+        <input type="text" placeholder="캐터 이름 (예: 팔햄)" value="${defaultName}" style="flex:1;">
         <input type="file" accept="image/*" onchange="previewImage(this, 'prev-${id}')">
         <img id="prev-${id}" class="char-avatar-preview" alt="">
         <button class="btn-remove-char" onclick="removeCharEntry(${id})">✕</button>
@@ -644,6 +662,29 @@ function nextTurn() {
 
     saveHistory();
     gameState.turn++;
+
+    // 동굴 모드 — 동굴 탐험 미션 진행 중 + 지하 동굴 위치
+    if (gameState.missions.includes('동굴 내부 탐험하기') && gameState.location === '지하 동굴') {
+        const caveEv = pick(CAVE_EVENTS);
+        addLog(`${caveEv.emoji} ${caveEv.text}`);
+        if (caveEv.item && !gameState.items.includes(caveEv.item)) {
+            gameState.items.push(caveEv.item);
+            addLog(`✨ <strong style="color:#5588cc;">[ ${caveEv.item} 획득! ]</strong>`);
+        }
+        if (caveEv.isCaveExit) {
+            // 동굴 탈출 — 랜덤 장소로 이동
+            gameState.location = pick(LOCATIONS.filter(l => l !== '지하 동굴'));
+            completeMission('동굴 내부 탐험하기', '일행', '🌟');
+        }
+        updateDisplay();
+        return;
+    }
+
+    // 황금 해바라기 밭 — 햄스빌 언덕 도달 시 자동 클리어
+    if (gameState.missions.includes('황금 해바라기 밭 찾기') && gameState.location === '햄스빌 언덕') {
+        addLog(`🌻 햄스빌 언덕에 도착하자 눈앞에 황금빛 해바라기 밭이 펼쳐졌다! 찾았다!`, 'mission-complete');
+        completeMission('황금 해바라기 밭 찾기', '일행', '🌻');
+    }
 
     const roll = Math.random();
 
@@ -855,18 +896,46 @@ function confirmInvestigate() {
 
     closeInvestigateModal();
 
-    // 대화 선택
-    const dialogues = MISSION_DIALOGUES[mission] || DEFAULT_DIALOGUES;
-    const dialogue = pick(dialogues).replace(/{NPC}/g, `${emoji} ${npcName}`);
+    // 대화 풀 결정
+    const missionPool = MISSION_DIALOGUES[mission] || [];
+    const allPool = [...missionPool, ...DEFAULT_DIALOGUES];
+
+    // 조건 필터링 — 조건 불충족 대화는 제거
+    const filtered = allPool.filter(d => {
+        if (d.requireItem && !gameState.items.includes(d.requireItem)) return false;
+        if (d.requirePartyMember && !gameState.party.find(p => p.name === d.requirePartyMember)) return false;
+        // 씨앗 지급 대화 — 이미 가진 씨앗은 제외
+        if (d.giveItem && gameState.items.includes(d.giveItem)) return false;
+        return true;
+    });
+
+    const dialogue = pick(filtered.length > 0 ? filtered : DEFAULT_DIALOGUES);
+    const dialogueText = dialogue.text.replace(/{NPC}/g, `${emoji} ${npcName}`);
 
     addLog(`🔍 <strong>${npcName}</strong>에게 "<strong>${mission}</strong>"에 대해 물었다.`, 'investigate');
-    addLog(`💬 ${dialogue}`, 'investigate');
+    addLog(`💬 ${dialogueText}`, 'investigate');
 
-    // 완료 판정
-    if (Math.random() < MISSION_COMPLETE_CHANCE) {
-        setTimeout(() => {
-            completeMission(mission, npcName, emoji);
-        }, 400);
+    // 아이템 지급
+    if (dialogue.giveItem && !gameState.items.includes(dialogue.giveItem)) {
+        gameState.items.push(dialogue.giveItem);
+        addLog(`✨ <strong style="color:#5588cc;">[ ${dialogue.giveItem} 획득! ]</strong>`, 'investigate');
+    }
+
+    // 씨앗 3개 자동 완료 체크
+    const seedMission = '세 가지 신비한 씨앗 수집하기';
+    if (gameState.missions.includes(seedMission)) {
+        const seeds = ['고소한 씨앗', '달콤한 씨앗', '말라비틀어진 씨앗'];
+        if (seeds.every(s => gameState.items.includes(s))) {
+            setTimeout(() => {
+                addLog(`🌟 세 가지 씨앗이 모두 모였다! 씨앗들이 신비롭게 빛나기 시작했다...`, 'mission-complete');
+                completeMission(seedMission, npcName, emoji);
+            }, 400);
+        }
+    }
+
+    // clear 조건 대화면 미션 완료
+    if (dialogue.clear) {
+        setTimeout(() => completeMission(mission, npcName, emoji), 400);
     } else {
         addLog(`<em style="color:#888;">아직 결정적인 단서를 얻지 못했다. 계속 수소문해보자.</em>`, 'system');
     }

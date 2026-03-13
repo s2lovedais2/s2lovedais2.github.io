@@ -9,7 +9,7 @@
 
         body {
             font-family: 'Malgun Gothic', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #dce8f8 0%, #e8d9f7 100%);
             min-height: 100vh;
             padding: 20px;
         }
@@ -24,7 +24,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #b8d4f5 0%, #d4bff5 100%);
             color: white;
             padding: 25px 30px;
             text-align: center;
@@ -60,7 +60,7 @@
             display: none;
         }
         .btn-remove-char {
-            background: #ff6b6b;
+            background: #b0b8d0;
             color: white;
             border: none;
             border-radius: 8px;
@@ -73,7 +73,7 @@
             width: 100%;
             padding: 12px;
             margin: 10px 0;
-            background: #74b9ff;
+            background: #a8c8f0;
             color: white;
             border: none;
             border-radius: 10px;
@@ -84,7 +84,7 @@
             width: 100%;
             padding: 16px;
             margin-top: 10px;
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            background: linear-gradient(135deg, #a8c8f0 0%, #c8a8f0 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -134,7 +134,7 @@
         .char-emoji-avatar {
             width: 42px; height: 42px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #a29bfe, #fd79a8);
+            background: linear-gradient(135deg, #b8c8f8, #d4bff5);
             display: flex; align-items: center; justify-content: center;
             font-size: 22px;
             flex-shrink: 0;
@@ -154,7 +154,7 @@
         .char-leave-btn:hover { color: #ff6b6b; }
 
         .info-row { font-size: 14px; margin-bottom: 6px; }
-        .info-row strong { color: #d63031; }
+        .info-row strong { color: #7090c8; }
 
         .badge {
             display: inline-block;
@@ -167,22 +167,22 @@
         }
 
         .mission-box {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: linear-gradient(135deg, #ddeeff 0%, #e8d9f7 100%);
             border-radius: 10px;
             padding: 10px 12px;
             font-size: 13px;
-            border-left: 4px solid #ff6b6b;
+            border-left: 4px solid #a0b8e8;
             margin-top: 4px;
         }
 
         .mission-done-box {
-            background: linear-gradient(135deg, #d4efdf 0%, #d5f5e3 100%);
+            background: linear-gradient(135deg, #e0eeff 0%, #d9eeff 100%);
             border-radius: 10px;
             padding: 10px 12px;
             font-size: 13px;
-            border-left: 4px solid #00b894;
+            border-left: 4px solid #88aad8;
             margin-top: 4px;
-            color: #2d6a4f;
+            color: #4a6a9a;
         }
 
         /* 이벤트 로그 */
@@ -208,12 +208,12 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             animation: fadeIn 0.3s ease;
         }
-        .log-entry.interaction { border-left: 4px solid #a29bfe; }
-        .log-entry.join { border-left: 4px solid #00b894; }
-        .log-entry.leave { border-left: 4px solid #ff6b6b; }
-        .log-entry.system { border-left: 4px solid #fdcb6e; color: #636e72; font-style: italic; }
-        .log-entry.investigate { border-left: 4px solid #fd79a8; background: #fff5f8; }
-        .log-entry.mission-complete { border-left: 4px solid #00b894; background: #f0fff8; }
+            .log-entry.interaction { border-left: 4px solid #b0c4f0; }
+            .log-entry.join { border-left: 4px solid #88aad8; }
+            .log-entry.leave { border-left: 4px solid #b0b8d0; }
+            .log-entry.system { border-left: 4px solid #c8d8f0; color: #7890aa; font-style: italic; }
+            .log-entry.investigate { border-left: 4px solid #c0aae8; background: #f5f0ff; }
+            .log-entry.mission-complete { border-left: 4px solid #88aad8; background: #eef4ff; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -239,9 +239,9 @@
         }
         .button-group button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .button-group button:active { transform: translateY(0); }
-        .btn-next { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .btn-prev { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .btn-investigate { background: linear-gradient(135deg, #fd79a8, #e84393); }
+        .btn-next { background: linear-gradient(135deg, #a0b8e8, #b8a0e8); }
+        .btn-prev { background: linear-gradient(135deg, #b8c8f0, #c8b0e8); }
+        .btn-investigate { background: linear-gradient(135deg, #c0aae8, #a8c0f0); }    
 
         /* 수소문 모달 */
         #investigate-modal {
@@ -280,10 +280,10 @@
         .modal-box p { color: #555; margin-bottom: 20px; font-size: 15px; line-height: 1.7; white-space: pre-line; }
         .modal-buttons { display: flex; gap: 12px; }
         .modal-buttons button { flex: 1; padding: 12px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; color: white; }
-        .btn-accept { background: linear-gradient(135deg, #00b894, #00cec9); }
-        .btn-decline { background: linear-gradient(135deg, #636e72, #b2bec3); }
-        .btn-mission-yes { background: linear-gradient(135deg, #fd79a8, #e84393); }
-        .btn-mission-no { background: linear-gradient(135deg, #636e72, #b2bec3); }
+        .btn-accept { background: linear-gradient(135deg, #88aad8, #a0c0e8); }
+        .btn-decline { background: linear-gradient(135deg, #b0b8d0, #c8d0e0); }
+        .btn-mission-yes { background: linear-gradient(135deg, #b0a0e0, #a0b8f0); }
+        .btn-mission-no { background: linear-gradient(135deg, #b0b8d0, #c8d0e0); }
 
         .mission-choices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
         .mission-choice-btn {
@@ -296,8 +296,8 @@
             text-align: left;
             transition: border-color 0.2s, background 0.2s;
         }
-        .mission-choice-btn:hover { border-color: #fd79a8; background: #fff5f8; }
-        .mission-choice-btn.selected { border-color: #e84393; background: #ffe3ef; font-weight: bold; }
+        .mission-choice-btn:hover { border-color: #a0b8e8; background: #f0f4ff; }
+        .mission-choice-btn.selected { border-color: #7090c8; background: #e0eaff; font-weight: bold; }
 
         .event-log::-webkit-scrollbar { width: 8px; }
         .event-log::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
